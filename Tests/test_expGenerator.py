@@ -7,10 +7,11 @@ from Generators import ExpGenerator
 class TestExpGenerator(TestCase):
 
     def setUp(self):
-        """Settings for lambda, size of the sample and seed for the RNG"""
+        """Settings for lambda, size of the sample, seed for the RNG and precision of comparison"""
         self.lamb = 2
         self.size = 1_000_000
         self.seed = None
+        self.precision = 2
 
     def test_get_exponential_list(self):
         """Builds a list of size self.size using both ExpGenerator.get_exponential_list
@@ -35,14 +36,15 @@ class TestExpGenerator(TestCase):
         var = var / (self.size - 1)
         expo_var = expo_var / (self.size - 1)
 
-        print(f"Mean: {1 / self.lamb} == {mean}")
-        print(f"Variance: {1 / (self.lamb ** 2)} == {var}")
+        print("\n")
+        print(f"Mean:      {1 / self.lamb} == {mean}")
         print(f"Expo Mean: {1 / self.lamb} == {expo_mean}")
+        print(f"Variance:      {1 / (self.lamb ** 2)} == {var}")
         print(f"Expo Variance: {1 / (self.lamb ** 2)} == {expo_var}")
         print("\n")
 
-        # self.assertAlmostEqual(mean, expo_mean, 3)
-        # self.assertAlmostEqual(var, expo_var, 3)
+        self.assertAlmostEqual(abs(mean - expo_mean), 0.0, self.precision)
+        self.assertAlmostEqual(abs(var - expo_var), 0.0, self.precision)
 
     def test_get_exponential_time(self):
         """Builds a list of size self.size using both ExpGenerator.get_exponential_time
@@ -68,14 +70,14 @@ class TestExpGenerator(TestCase):
         var = var / (self.size - 1)
         expo_var = expo_var / (self.size - 1)
 
-        print(f"Mean: {1 / self.lamb} == {mean}")
-        print(f"Variance: {1 / (self.lamb ** 2)} == {var}")
+        print(f"Mean:      {1 / self.lamb} == {mean}")
         print(f"Expo Mean: {1 / self.lamb} == {expo_mean}")
+        print(f"Variance:      {1 / (self.lamb ** 2)} == {var}")
         print(f"Expo Variance: {1 / (self.lamb ** 2)} == {expo_var}")
         print("\n")
 
-        # self.assertAlmostEqual(mean, expo_mean, 3)
-        # self.assertAlmostEqual(var, expo_var, 3)
+        self.assertAlmostEqual(abs(mean - expo_mean), 0.0, self.precision)
+        self.assertAlmostEqual(abs(var - expo_var), 0.0, self.precision)
 
     def test_get_exponential_time_lambda_1(self):
         """Builds a list of size self.size using both ExpGenerator.get_exponential_time_lambda1
@@ -101,10 +103,10 @@ class TestExpGenerator(TestCase):
         var = var / (self.size - 1)
         expo_var = expo_var / (self.size - 1)
 
-        print(f"Mean: 1 == {mean}")
-        print(f"Variance: 1 == {var}")
+        print(f"Mean:      1 == {mean}")
         print(f"Expo Mean: 1 == {expo_mean}")
+        print(f"Variance:      1 == {var}")
         print(f"Expo Variance: 1 == {expo_var}")
 
-        # self.assertAlmostEqual(mean, expo_mean, 3)
-        # self.assertAlmostEqual(var, expo_var, 3)
+        self.assertAlmostEqual(abs(mean - expo_mean), 0.0, self.precision)
+        self.assertAlmostEqual(abs(var - expo_var), 0.0, self.precision)
