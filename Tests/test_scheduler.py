@@ -26,3 +26,25 @@ class TestScheduler(TestCase):
             # print(f"Arrival time: {arrival}\n"
             #       f"service time: {res[i].get_service_time()}\n")
         self.assertTrue(test)
+
+    def test_empty_queue(self):
+        """Builds a queue, make it empty, retrieve the queue
+        and compares it with the an empty list"""
+        start = 20
+        size = 10
+
+        self.__scheduler.build_queue(size, start)
+        self.__scheduler.empty_queue()
+        res = self.__scheduler.get_queue()
+        self.assertTrue(res == [])
+
+    def test_queue_size(self):
+        """Check if the queue is being created with the intended size"""
+        start = 20
+        size = 10
+
+        self.__scheduler.build_queue(size, start)
+        self.__scheduler.build_queue(size, start)
+        self.__scheduler.build_queue(size, start)
+        res = self.__scheduler.get_queue()
+        self.assertTrue(len(res) == size * 3)
