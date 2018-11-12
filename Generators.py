@@ -12,7 +12,7 @@ class ExpGenerator:
         seed(input_seed)
 
     def get_lambda(self):
-        """Get the current value of lambda"""
+        """Returns the current value of lambda"""
         return self.__lambda
 
     def set_lambda(self, param_lambda):
@@ -32,7 +32,7 @@ class ExpGenerator:
         return time
 
     def get_exponential_list(self, size):
-        """Returns a list of size "size" of sample times of
+        """Returns a list of size 'size' of sample times of
         the exponential distribution using the current lambda"""
         time = []
         for i in range(0, size):
