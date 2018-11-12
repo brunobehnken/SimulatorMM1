@@ -16,7 +16,7 @@ class Scheduler:
         gen = ExpGenerator(param_lambda, seed)
         arrival_time = start_time
         self.__queue.append(Client(arrival_time, gen.get_exponential_time_lambda_1()))
-        for i in range(0, size):
+        for i in range(0, size-1):
             arrival_time += gen.get_exponential_time()
             self.__queue.append(Client(arrival_time, gen.get_exponential_time_lambda_1()))
 
