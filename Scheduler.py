@@ -7,9 +7,9 @@ class Scheduler:
     def __init__(self):
         self.__queue = []
 
-    def build_queue(self, size, param_lambda=2, seed=None):
+    def build_queue(self, size, start_time, param_lambda=2, seed=None):
         gen = ExpGenerator(param_lambda, seed)
-        arrival_time = 0
+        arrival_time = start_time
         self.__queue.append(Client(arrival_time, gen.get_exponential_time_lambda_1()))
         for i in range(0, size):
             arrival_time += gen.get_exponential_time()
