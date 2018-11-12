@@ -23,3 +23,8 @@ class Scheduler:
     def get_queue(self):
         """Returns the current queue"""
         return self.__queue
+
+    def empty_queue(self):
+        """Deletes the current queue and creates a new empty one"""
+        del self.__queue
+        self.__queue = []
