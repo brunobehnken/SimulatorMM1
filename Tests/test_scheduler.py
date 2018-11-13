@@ -17,7 +17,7 @@ class TestScheduler(TestCase):
         last_arrival = start
         size = 10000
 
-        self.__scheduler.build_queue(size, start)
+        self.__scheduler.build_queue(size, start, 1)
         res = self.__scheduler.get_queue()
         for i in range(0, size):
             arrival = res[i].get_arrival_time()
@@ -25,6 +25,26 @@ class TestScheduler(TestCase):
                 test = False
             # print(f"Arrival time: {arrival}\n"
             #       f"service time: {res[i].get_service_time()}\n")
+        self.assertTrue(test)
+
+    def test_start_time(self):
+        """Builds queues with start_flag as True and then as False,
+        checking if the resulting start times are correct"""
+        start = 0
+        test = True
+        size = 2
+
+        self.__scheduler.build_queue(size, start, 1, True)
+        res = self.__scheduler.get_queue()
+        if res[0].get_arrival_time() != start:
+            test = False
+        self.assertTrue(test)
+
+        self.__scheduler.empty_queue()
+        self.__scheduler.build_queue(size, start, 1)
+        res = self.__scheduler.get_queue()
+        if res[0].get_arrival_time() == start:
+            test = False
         self.assertTrue(test)
 
     def test_empty_queue(self):
