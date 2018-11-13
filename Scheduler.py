@@ -10,15 +10,19 @@ class Scheduler:
         """Starts the queue with no clients"""
         self.__queue = []
 
-    def build_queue(self, size, start_time, param_lambda=2, seed=None):
-        """Generates a queue with 'size' clients that starts at 'start_time'.
+    def build_queue(self, size, start_time, param_lambda, start_flag=False, seed=None):
+        """Generates a queue with 'size' clients that starts at 'start_time' if 'start_flag' is True
+        and starts at 'start_time + exponential_time' if 'start_flag' is False.
         Each client has its times generated using the parameters 'param_lambda' and 'seed'"""
         gen = ExpGenerator(param_lambda, seed)
-        arrival_time = start_time
-        self.__queue.append(Client(arrival_time, gen.get_exponential_time_lambda_1()))
-        for i in range(0, size-1):
-            arrival_time += gen.get_exponential_time()
-            self.__queue.append(Client(arrival_time, gen.get_exponential_time_lambda_1()))
+        if start_flag:
+            for i in range(0, size):
+                self.__queue.append(Client(start_time, gen.get_exponential_time_lambda_1()))
+                start_time += gen.get_exponential_time()
+        else:
+            for i in range(0, size):
+                start_time += gen.get_exponential_time()
+                self.__queue.append(Client(start_time, gen.get_exponential_time_lambda_1()))
 
     def get_queue(self):
         """Returns the current queue"""
