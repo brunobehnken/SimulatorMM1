@@ -9,16 +9,15 @@ class TestScheduler(TestCase):
         """Initializes the Scheduler"""
         self.__scheduler = Scheduler()
 
-    def test_build_and_get_queue(self):
-        """Builds a queue with size 'size' and retrieves it,
+    def test_build_queue(self):
+        """Builds a queue with size 'size',
         checking if the arrival times are cumulative"""
         start = 0
         test = True
         last_arrival = start
         size = 10000
 
-        self.__scheduler.build_queue(size, start, 1)
-        res = self.__scheduler.get_queue()
+        res = self.__scheduler.build_queue(size, start, 1)
         for i in range(0, size):
             arrival = res[i].get_arrival_time()
             if arrival < last_arrival:
@@ -34,37 +33,32 @@ class TestScheduler(TestCase):
         test = True
         size = 2
 
-        self.__scheduler.build_queue(size, start, 1, True)
-        res = self.__scheduler.get_queue()
+        res = self.__scheduler.build_queue(size, start, 1, True)
         if res[0].get_arrival_time() != start:
             test = False
         self.assertTrue(test)
 
-        self.__scheduler.empty_queue()
-        self.__scheduler.build_queue(size, start, 1)
-        res = self.__scheduler.get_queue()
+        res = self.__scheduler.build_queue(size, start, 1)
         if res[0].get_arrival_time() == start:
             test = False
         self.assertTrue(test)
 
-    def test_empty_queue(self):
-        """Builds a queue, make it empty, retrieve the queue
-        and compares it with the an empty list"""
-        start = 20
-        size = 10
-
-        self.__scheduler.build_queue(size, start)
-        self.__scheduler.empty_queue()
-        res = self.__scheduler.get_queue()
-        self.assertTrue(res == [])
+    # def test_empty_queue(self):
+    #     """Builds a queue, make it empty, retrieve the queue
+    #     and compares it with the an empty list"""
+    #     start = 20
+    #     size = 10
+    #
+    #     self.__scheduler.build_queue(size, start)
+    #     self.__scheduler.empty_queue()
+    #     res = self.__scheduler.get_queue()
+    #     self.assertTrue(res == [])
 
     def test_queue_size(self):
         """Check if the queue is being created with the intended size"""
         start = 20
         size = 10
 
-        self.__scheduler.build_queue(size, start)
-        self.__scheduler.build_queue(size, start)
-        self.__scheduler.build_queue(size, start)
-        res = self.__scheduler.get_queue()
-        self.assertTrue(len(res) == size * 3)
+        res = self.__scheduler.build_queue(size, start, 1)
+        res += self.__scheduler.build_queue(size, start, 1)
+        self.assertTrue(len(res) == size * 2)
