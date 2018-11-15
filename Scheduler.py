@@ -6,14 +6,11 @@ class Scheduler:
     """This class implements a scheduler, which function is to manage
     time-ordered events that will take place in the simulator"""
 
-    def __init__(self, num_clients, param_lambda, seed=None):
+    def __init__(self, param_lambda, seed=None):
         """Starts the scheduler and schedules the first arrival.
-        'num_clients' is the total number of clients that will be scheduled.
         'param_lambda' and 'seed' are used to generate exponential times"""
 
-        self.__num_clients = num_clients
         self.__gen = ExpGenerator(param_lambda, seed)
-        self.__client_counter = 0  # clients that have already arrived
         self.__last_arrival_time = 0
 
         # schedule is a time-ordered list of events that are represented as tuples.
@@ -25,18 +22,13 @@ class Scheduler:
 
         # schedule first arrival
         client = Client(0, self.__gen.get_exponential_time_lambda_1())
-        # self.__schedule.append(('a', 0, client))  # updates the schedule
         self.__update_schedule(('a', client))
-        self.__client_counter += 1
 
-    def __schedule_next_arrival(self):
-        """Schedule the event of the next client arrival, if possible"""
-        if self.__client_counter == self.__num_clients:  # if all the clients have already arrived, return
-            return
+    def schedule_next_arrival(self):
+        """Schedule the event of the next client arrival"""
         self.__last_arrival_time += self.__gen.get_exponential_time()  # calculate next arrival time
         client = Client(self.__last_arrival_time, self.__gen.get_exponential_time_lambda_1())
         self.__update_schedule(('a', client))
-        self.__client_counter += 1
 
     def __update_schedule(self, event):
         """Updates the schedule with the event, preserving time-ordering"""
@@ -61,12 +53,9 @@ class Scheduler:
         self.__update_schedule(('d', client))
 
     def get_next_event(self):
-        """Returns the next event in the schedule or None if the schedule is empty.
-        Automatically schedules the next arrival if necessary"""
+        """Returns the next event in the schedule or None if the schedule is empty."""
         if len(self.__schedule) == 0:
             return None
         event = self.__schedule.pop(0)
-        if event[0] == 'a':
-            self.__schedule_next_arrival()
         tup = (event[0], event[2])
         return tup
