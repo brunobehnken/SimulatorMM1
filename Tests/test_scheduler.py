@@ -12,7 +12,7 @@ class TestScheduler(TestCase):
         scheduler = Scheduler(0.6)
         event_list = []
         next_event = scheduler.get_next_event()
-        while next_event is not None or counter < size:
+        while next_event is not None:
             event_list.append(next_event)
             if next_event[0] == 'a':
                 next_event[1].set_departure_time(next_event[1].get_arrival_time() + next_event[1].get_service_time())
