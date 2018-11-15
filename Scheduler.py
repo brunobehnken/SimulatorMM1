@@ -38,10 +38,6 @@ class Scheduler:
         self.__update_schedule(('a', client))
         self.__client_counter += 1
 
-    def schedule_departure(self, client):
-        """Schedule the event of the departure of the client currently being served"""
-        self.__update_schedule(('d', client))
-
     def __update_schedule(self, event):
         """Updates the schedule with the event, preserving time-ordering"""
         i = 0
@@ -58,6 +54,11 @@ class Scheduler:
             while i < size and self.__schedule[i][1] < time:
                 i += 1
             self.__schedule.insert(i, ('d', time, event[1]))
+
+    def schedule_departure(self, client):
+        """Schedule the event of the departure of the client currently being served.
+        Assumes that wait_time and departure_time are already set by the server"""
+        self.__update_schedule(('d', client))
 
     def get_next_event(self):
         """Returns the next event in the schedule or None if the schedule is empty.

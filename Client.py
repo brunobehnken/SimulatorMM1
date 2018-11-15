@@ -22,13 +22,21 @@ class Client:
         return self.__wait_time
 
     def set_wait_time(self, wait_time):
-        """Sets the wait time"""
-        self.__wait_time = wait_time
+        """Sets the wait time if possible"""
+        if self.__wait_time is None:
+            self.__wait_time = wait_time
 
     def get_departure_time(self):
         """Returns the departure time"""
         return self.__departure_time
 
     def set_departure_time(self, departure_time):
-        """Sets the departure time"""
-        self.__departure_time = departure_time
+        """Sets the departure time if possible"""
+        if self.__departure_time is None:
+            self.__departure_time = departure_time
+
+    def __str__(self):
+        return f"Arrival time: {self.__arrival_time}\n" \
+               f"Service time: {self.__service_time}\n" \
+               f"Wait time: {self.__wait_time}\n" \
+               f"Departure time: {self.__departure_time}\n"
