@@ -5,60 +5,40 @@ from Scheduler import Scheduler
 
 class TestScheduler(TestCase):
 
-    def setUp(self):
-        """Initializes the Scheduler"""
-        self.__scheduler = Scheduler()
-
-    def test_build_queue(self):
-        """Builds a queue with size 'size',
-        checking if the arrival times are cumulative"""
-        start = 0
-        test = True
-        last_arrival = start
-        size = 10000
-
-        res = self.__scheduler.build_queue(size, start, 1)
-        for i in range(0, size):
-            arrival = res[i].get_arrival_time()
-            if arrival < last_arrival:
-                test = False
-            # print(f"Arrival time: {arrival}\n"
-            #       f"service time: {res[i].get_service_time()}\n")
-        self.assertTrue(test)
-
-    def test_start_time(self):
-        """Builds queues with start_flag as True and then as False,
-        checking if the resulting start times are correct"""
-        start = 0
-        test = True
-        size = 2
-
-        res = self.__scheduler.build_queue(size, start, 1, True)
-        if res[0].get_arrival_time() != start:
-            test = False
-        self.assertTrue(test)
-
-        res = self.__scheduler.build_queue(size, start, 1)
-        if res[0].get_arrival_time() == start:
-            test = False
-        self.assertTrue(test)
-
-    # def test_empty_queue(self):
-    #     """Builds a queue, make it empty, retrieve the queue
-    #     and compares it with the an empty list"""
-    #     start = 20
-    #     size = 10
-    #
-    #     self.__scheduler.build_queue(size, start)
-    #     self.__scheduler.empty_queue()
-    #     res = self.__scheduler.get_queue()
-    #     self.assertTrue(res == [])
-
-    def test_queue_size(self):
-        """Check if the queue is being created with the intended size"""
-        start = 20
+    def test_populate_schedule(self):
         size = 10
+        counter = 1
 
-        res = self.__scheduler.build_queue(size, start, 1)
-        res += self.__scheduler.build_queue(size, start, 1)
-        self.assertTrue(len(res) == size * 2)
+        scheduler = Scheduler(0.6)
+        event_list = []
+        next_event = scheduler.get_next_event()
+        while next_event is not None:
+            event_list.append(next_event)
+            if next_event[0] == 'a':
+                next_event[1].set_departure_time(next_event[1].get_arrival_time() + next_event[1].get_service_time())
+                scheduler.schedule_departure(next_event[1])
+                if counter < size:
+                    scheduler.schedule_next_arrival()
+                    counter += 1
+            next_event = scheduler.get_next_event()
+        self.assertTrue(size*2 == len(event_list))
+        for i in range(0, size*2):
+            print(f"Event: {event_list[i][0]}\n{event_list[i][1]}")
+
+    def test_huge_populate_schedule(self):
+        size = 10_000_000
+        counter = 1
+
+        scheduler = Scheduler(0.6)
+        counter_list = 0
+        next_event = scheduler.get_next_event()
+        while next_event is not None:
+            counter_list += 1
+            if next_event[0] == 'a':
+                next_event[1].set_departure_time(next_event[1].get_arrival_time() + next_event[1].get_service_time())
+                scheduler.schedule_departure(next_event[1])
+                if counter < size:
+                    scheduler.schedule_next_arrival()
+                    counter += 1
+            next_event = scheduler.get_next_event()
+        self.assertTrue(size*2 == counter_list)
