@@ -3,7 +3,7 @@ from Scheduler import Scheduler
 
 class SimulatorFCFS:
     """This class implements a FCFS queue simulator, which function is
-    to gather statistics for this discipline of service."""
+    to gather statistics for this discipline of service"""
 
     def __init__(self, rho):
         """Starts the simulator using 'rho' as its utilization.
