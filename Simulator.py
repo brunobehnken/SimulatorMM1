@@ -9,6 +9,7 @@ class SimulatorFCFS:
     def __init__(self, rho, seed=None):
         """Starts the simulator using 'rho' as its utilization.
         This parameter cannot be changed later"""
+        self.__rho = rho
         self.__start_time = 0  # start_time of simulation rounds
         self.__current_time = 0  # current time of the simulator (state variable kept over function calls)
         self.__queue = []  # queue of the simulator (state variable kept over function calls)
@@ -89,9 +90,14 @@ class SimulatorFCFS:
         stats = Statistics()
         means_w = []
         old_var = 0
-        threshold = 1.0e-04
         diff_counter = 0
 
+        if self.__rho == 0.8 or self.__rho == 0.9:
+            threshold = 1.0e-01
+            diff_limit = 150
+        else:
+            threshold = 1.0e-04
+            diff_limit = 30
         while True:
             for i in range(0, 10):
                 res = self.simulate_FCFS(100)
@@ -102,7 +108,7 @@ class SimulatorFCFS:
             old_var = var_w
             if diff < threshold:
                 diff_counter += 1
-                if diff_counter == 30:
+                if diff_counter == diff_limit:
                     break
 
 
@@ -113,6 +119,7 @@ class SimulatorLCFS:
     def __init__(self, rho, seed=None):
         """Starts the simulator using 'rho' as its utilization.
         This parameter cannot be changed later"""
+        self.__rho = rho
         self.__start_time = 0  # start_time of simulation rounds
         self.__current_time = 0  # current time of the simulator (state variable kept over function calls)
         self.__queue = []  # queue of the simulator (state variable kept over function calls)
@@ -193,9 +200,14 @@ class SimulatorLCFS:
         stats = Statistics()
         means_w = []
         old_var = 0
-        threshold = 1.0e-04
         diff_counter = 0
 
+        if self.__rho == 0.8 or self.__rho == 0.9:
+            threshold = 1.0e-01
+            diff_limit = 150
+        else:
+            threshold = 1.0e-04
+            diff_limit = 30
         while True:
             for i in range(0, 10):
                 res = self.simulate_LCFS(100)
@@ -206,5 +218,5 @@ class SimulatorLCFS:
             old_var = var_w
             if diff < threshold:
                 diff_counter += 1
-                if diff_counter == 30:
+                if diff_counter == diff_limit:
                     break
