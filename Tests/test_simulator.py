@@ -23,3 +23,11 @@ class TestSimulator(TestCase):
             # print(res[0])
             # print(res[1])
             # print(res[2])
+
+    def test_transient_phase_FCFS(self):
+        simulator = SimulatorFCFS(0.2)
+        simulator.transient_phase()
+
+    def test_transient_phase_LCFS(self):
+        simulator = SimulatorLCFS(0.2)
+        simulator.transient_phase()

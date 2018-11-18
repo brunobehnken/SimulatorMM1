@@ -1,4 +1,5 @@
 from Scheduler import Scheduler
+from Statistics import Statistics
 
 
 class SimulatorFCFS:
@@ -82,6 +83,28 @@ class SimulatorFCFS:
         res = (final_waiting_times, final_areas, round_runtime)  # builds the return tuple
         return res
 
+    def transient_phase(self):
+        """Runs the simulator until the transient phase is finished, which occurs
+        when 30 delta variance values under 1.0e-04 precision are found"""
+        stats = Statistics()
+        means_w = []
+        old_var = 0
+        threshold = 1.0e-04
+        diff_counter = 0
+
+        while True:
+            for i in range(0, 10):
+                res = self.simulate_FCFS(100)
+                means_w.append(stats.calculate_mean(res[0]))
+            var_w = stats.calculate_incremental_variance(means_w)
+            means_w.clear()
+            diff = abs(var_w - old_var)
+            old_var = var_w
+            if diff < threshold:
+                diff_counter += 1
+                if diff_counter == 30:
+                    break
+
 
 class SimulatorLCFS:
     """This class implements a LCFS queue simulator, which function is
@@ -163,3 +186,25 @@ class SimulatorLCFS:
         round_runtime = self.__current_time - self.__start_time  # calculates amount of time of this simulation round
         res = (final_waiting_times, final_areas, round_runtime)  # builds the return tuple
         return res
+
+    def transient_phase(self):
+        """Runs the simulator until the transient phase is finished, which occurs
+        when 30 delta variance values under 1.0e-04 precision are found"""
+        stats = Statistics()
+        means_w = []
+        old_var = 0
+        threshold = 1.0e-04
+        diff_counter = 0
+
+        while True:
+            for i in range(0, 10):
+                res = self.simulate_LCFS(100)
+                means_w.append(stats.calculate_mean(res[0]))
+            var_w = stats.calculate_incremental_variance(means_w)
+            means_w.clear()
+            diff = abs(var_w - old_var)
+            old_var = var_w
+            if diff < threshold:
+                diff_counter += 1
+                if diff_counter == 30:
+                    break
