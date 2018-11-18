@@ -5,14 +5,14 @@ class SimulatorFCFS:
     """This class implements a FCFS queue simulator, which function is
     to gather statistics for this discipline of service"""
 
-    def __init__(self, rho):
+    def __init__(self, rho, seed=None):
         """Starts the simulator using 'rho' as its utilization.
         This parameter cannot be changed later"""
         self.__start_time = 0  # start_time of simulation rounds
         self.__current_time = 0  # current time of the simulator (state variable kept over function calls)
         self.__queue = []  # queue of the simulator (state variable kept over function calls)
         self.__server_idle = True  # state of the server of the simulator (state variable kept over function calls)
-        self.__scheduler = Scheduler(rho)  # Scheduler (state variable kept over function calls)
+        self.__scheduler = Scheduler(rho, seed)  # Scheduler (state variable kept over function calls)
         self.__waiting_times = []  # list of waiting times of the costumers, for statistics
         self.__areas = []  # list of number of waiting costumers, for statistics
 
@@ -34,6 +34,7 @@ class SimulatorFCFS:
                 self.__current_time = client.get_arrival_time()  # set current time to arrival time
                 if self.__server_idle:  # if server is idle, client gets served immediately
                     client.set_wait_time(0)  # no wait_time at all
+                    self.__areas.append(0)  # updates 'waiting costumers' statistics with 0 waiting costumers
                     self.__waiting_times.append(client.get_wait_time())  # updates wait_time statistics
                     counter += 1  # Increments counter of wait_time statistics gathered
                     client.set_departure_time(client.get_arrival_time() + client.get_wait_time() +
@@ -86,14 +87,14 @@ class SimulatorLCFS:
     """This class implements a LCFS queue simulator, which function is
     to gather statistics for this discipline of service"""
 
-    def __init__(self, rho):
+    def __init__(self, rho, seed=None):
         """Starts the simulator using 'rho' as its utilization.
         This parameter cannot be changed later"""
         self.__start_time = 0  # start_time of simulation rounds
         self.__current_time = 0  # current time of the simulator (state variable kept over function calls)
         self.__queue = []  # queue of the simulator (state variable kept over function calls)
         self.__server_idle = True  # state of the server of the simulator (state variable kept over function calls)
-        self.__scheduler = Scheduler(rho)  # Scheduler (state variable kept over function calls)
+        self.__scheduler = Scheduler(rho, seed)  # Scheduler (state variable kept over function calls)
         self.__waiting_times = []  # list of waiting times of the costumers, for statistics
         self.__areas = []  # list of number of waiting costumers, for statistics
 
@@ -115,6 +116,7 @@ class SimulatorLCFS:
                 self.__current_time = client.get_arrival_time()  # set current time to arrival time
                 if self.__server_idle:  # if server is idle, client gets served immediately
                     client.set_wait_time(0)  # no wait_time at all
+                    self.__areas.append(0)  # updates 'waiting costumers' statistics with 0 waiting costumers
                     self.__waiting_times.append(client.get_wait_time())  # updates wait_time statistics
                     counter += 1  # Increments counter of wait_time statistics gathered
                     client.set_departure_time(client.get_arrival_time() + client.get_wait_time() +
