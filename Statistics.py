@@ -17,6 +17,8 @@ class Statistics:
         return sum(sample) / len(sample)
 
     def calculate_incremental_mean(self, sample):
+        """Returns a float with the mean of all the samples given until now.
+        Values can be reset using the reset method."""
         self.__mean_sample_sum += sum(sample)
         self.__mean_num_sample += len(sample)
         return self.__mean_sample_sum / self.__mean_num_sample
@@ -30,6 +32,8 @@ class Statistics:
         return variance_sum / (len(sample) - 1)
 
     def calculate_incremental_variance(self, sample):
+        """Returns a float with the variance of all the samples given until now.
+        Values can be reset using the reset method."""
         self.__var_sample_sum += sum(sample)
         self.__var_num_sample += len(sample)
         for i in range(0, len(sample)):
@@ -49,7 +53,6 @@ class Statistics:
         lower = mean - t_student * mul
         precision = (upper - lower) / (upper + lower)
         center = (upper + lower)/2
-
         return center, upper, lower, precision
 
     @staticmethod
@@ -66,5 +69,12 @@ class Statistics:
         upper = df * variance / chi2_upper
         precision = (chi2_lower - chi2_upper) / (chi2_lower + chi2_upper)
         center = (upper + lower) / 2
-
         return center, upper, lower, precision
+
+    def reset(self):
+        """This method resets the metrics for incremental calculus of mean and variance"""
+        self.__mean_sample_sum = 0
+        self.__mean_num_sample = 0
+        self.__var_sample_sum = 0
+        self.__var_sample_sum_of_squares = 0
+        self.__var_num_sample = 0
