@@ -4,10 +4,22 @@ from math import sqrt
 
 class Statistics:
 
+    def __init__(self):
+        self.__mean_sample_sum = 0
+        self.__mean_num_sample = 0
+        self.__var_sample_sum = 0
+        self.__var_sample_sum_of_squares = 0
+        self.__var_num_sample = 0
+
     @staticmethod
     def calculate_mean(sample):
         """Returns a float with the mean of a sample"""
         return sum(sample) / len(sample)
+
+    def calculate_incremental_mean(self, sample):
+        self.__mean_sample_sum += sum(sample)
+        self.__mean_num_sample += len(sample)
+        return self.__mean_sample_sum / self.__mean_num_sample
 
     @staticmethod
     def calculate_variance(sample, mean):
@@ -16,6 +28,14 @@ class Statistics:
         for _sample in sample:
             variance_sum += (_sample - mean) ** 2
         return variance_sum / (len(sample) - 1)
+
+    def calculate_incremental_variance(self, sample):
+        self.__var_sample_sum += sum(sample)
+        self.__var_num_sample += len(sample)
+        for i in range(0, len(sample)):
+            self.__var_sample_sum_of_squares += sample[i] ** 2
+        return (self.__var_sample_sum_of_squares / (self.__var_num_sample - 1))\
+            - (self.__var_sample_sum ** 2 / (self.__var_num_sample * (self.__var_num_sample - 1)))
 
     @staticmethod
     def confidence_interval_for_mean(mean, variance, num_rounds, confidence_interval):
