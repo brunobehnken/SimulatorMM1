@@ -53,7 +53,7 @@ class Statistics:
         lower = mean - t_student * mul
         precision = (upper - lower) / (upper + lower)
         center = (upper + lower)/2
-        return center, upper, lower, precision
+        return center, lower, upper, precision
 
     @staticmethod
     def confidence_interval_for_variance(variance, num_rounds, confidence_interval):
@@ -69,7 +69,7 @@ class Statistics:
         upper = df * variance / chi2_upper
         precision = (chi2_lower - chi2_upper) / (chi2_lower + chi2_upper)
         center = (upper + lower) / 2
-        return center, upper, lower, precision
+        return center, lower, upper, precision
 
     def reset(self):
         """This method resets the metrics for incremental calculus of mean and variance"""
