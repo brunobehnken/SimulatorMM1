@@ -10,6 +10,8 @@ class Statistics:
         self.__var_sample_sum = 0
         self.__var_sample_sum_of_squares = 0
         self.__var_num_sample = 0
+        self.__time_mean_sample_sum = 0
+        self.__time_mean_num_sample = 0
 
     @staticmethod
     def calculate_mean(sample):
@@ -22,6 +24,14 @@ class Statistics:
         self.__mean_sample_sum += sum(sample)
         self.__mean_num_sample += len(sample)
         return self.__mean_sample_sum / self.__mean_num_sample
+
+    def calculate_incremental_time_mean(self, sample, length):
+        """Returns a float with the mean of all the samples given until now
+        using the length as denominator.
+        Values can be reset using the reset method."""
+        self.__time_mean_sample_sum += sum(sample)
+        self.__time_mean_num_sample += length
+        return self.__time_mean_sample_sum / self.__time_mean_num_sample
 
     @staticmethod
     def calculate_variance(sample, mean):
@@ -78,3 +88,5 @@ class Statistics:
         self.__var_sample_sum = 0
         self.__var_sample_sum_of_squares = 0
         self.__var_num_sample = 0
+        self.__time_mean_sample_sum = 0
+        self.__time_mean_num_sample = 0

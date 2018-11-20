@@ -2,16 +2,62 @@ from Simulator import SimulatorFCFS, SimulatorLCFS
 import time
 
 
+from Statistics import Statistics
+
+
+# noinspection PyPep8Naming
 class Master:
 
-    def __init__(self, number_of_rounds, rho):
-        self.__number_of_rounds = number_of_rounds
-        self.__simulator = SimulatorFCFS(rho)
-        self.__waiting_times_mean = None
-        self.__areas_mean = None
-        self.__waiting_times_variance = None
-        self.__areas_variance = None
-        self.__best_k_value = None
+    # def __init__(self, number_of_rounds, rho):
+    #     self.__number_of_rounds = number_of_rounds
+    #     self.__simulator = SimulatorFCFS(rho)
+    #     self.__waiting_times_mean = None
+    #     self.__areas_mean = None
+    #     self.__waiting_times_variance = None
+    #     self.__areas_variance = None
+    #     self.__best_k_value = None
+
+    def run_FCFS(self, rho, k):
+        """Prototype for Master.py"""
+        stat_w = Statistics()
+        stat_nq = Statistics()
+        simulator = SimulatorFCFS(rho)  # rho = 0.4
+        simulator.transient_phase()
+        res = simulator.simulate_FCFS(k)  # k = 1_000
+        mean_w = stat_w.calculate_incremental_mean(res[0])
+        var_w = stat_w.calculate_incremental_variance(res[0])
+        mean_nq = sum(res[1])/res[2]
+        var_nq = stat_nq.calculate_incremental_variance(res[1])
+        center_ew, lower_ew, upper_ew, precision_ew = self.__stat.confidence_interval_for_mean(mean_w, var_w, len(res[0]), 0.95)
+        center_vw, lower_vw, upper_vw, precision_vw = self.__stat.confidence_interval_for_variance(var_w, len(res[0]), 0.95)
+        center_enq, lower_enq, upper_enq, precision_enq = self.__stat.confidence_interval_for_mean(mean_nq, var_nq,
+                                                                                            len(res[1]), 0.95)
+        center_enq2, lower_enq2, upper_enq2, precision_enq2 = self.__stat.confidence_interval_for_mean(mean_nq2, var_nq2,
+                                                                                                res[2], 0.95)
+        center_vnq, lower_vnq, upper_vnq, precision_vnq = self.__stat.confidence_interval_for_variance(var_nq,
+                                                                                                len(res[1]), 0.95)
+        center_vnq2, lower_vnq2, upper_vnq2, precision_vnq2 = self.__stat.confidence_interval_for_variance(var_nq2,
+                                                                                                    res[2], 0.95)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def get_simulator(self):
         return self.__simulator
