@@ -33,6 +33,20 @@ class TestStatistics(TestCase):
         control = tmean(control_sample)
         self.assertAlmostEqual(mean, control)
 
+    def test_calculate_incremental_time_mean(self):
+        control_sample = []
+        sample = []
+        mean = 0
+        for i in range(0, 20):
+            for _ in range(0, 100):
+                elem = random()
+                sample.append(elem)
+                control_sample.append(elem)
+            mean = self.stat.calculate_incremental_time_mean(sample, len(sample))
+            sample.clear()
+        control = tmean(control_sample)
+        self.assertAlmostEqual(mean, control)
+
     def test_calculate_variance(self):
         sample = []
         for i in range(0, 100):
