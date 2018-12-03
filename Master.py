@@ -90,7 +90,36 @@ class Master:
         for i in range(len(results_nq)):
             print(results_nq[i])
 
+    def webmain(self, discipline, rho):
+        k = 1_000  # TODO this value is arbitrary for now but must be set later
+        discipline -= 1
+        if discipline != 0 and discipline != 1:
+            print("invalid input")
+            return
+        if discipline:  # LCFS
+            if rho == 0.2 or rho == 0.4 or rho == 0.6 or rho == 0.8 or rho == 0.9:
+                print("Simulating...")
+                results_w, results_nq = self.run_LCFS(rho, k)
+            else:
+                print("invalid input")
+                return
+        else:  # FCFS
+            if rho == 0.2 or rho == 0.4 or rho == 0.6 or rho == 0.8 or rho == 0.9:
+                print("Simulating...")
+                results_w, results_nq = self.run_FCFS(rho, k)
+            else:
+                print("invalid input")
+                return
 
-if __name__ == "__main__":
-    master = Master()
-    master.main()
+        w_means = []
+        nq_means = []
+        for i in range(len(results_w)):
+            w_means.append(results_w[i][0][0])
+        for i in range(len(results_nq)):
+            nq_means.append(results_nq[i][0][0])
+
+        return w_means, nq_means
+
+# if __name__ == "__main__":
+#     master = Master()
+#     master.main()

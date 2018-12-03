@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="/static/js/Chart.bundle.js"></script>
+	<script src="/static/js/jquery-3.2.1.js"></script>
+	<script src="/static/js/bootstrap.bundle.js"></script>
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<body>
+	<h1>Selected {{discipline}} discipline and {{rho}} utilization</h1>
+	<!--<h1>Tempos de espera em fila: </h1>
+	<p>{{results_w}}</p>
+	<h1>Número de pessoas na fila de espera: </h1>
+	<p>{{results_nq}}</p>-->
+	<canvas id="wChart" width="400" height="400"></canvas>
+	<canvas id="nqChart" width="400" height="400"></canvas>
+	<script>
+		var rounds = [];
+		for(var i = 0; i < 3200; i++){
+			rounds.push(i + 1);
+		}
+		var results_w = '{{results_w|safe}}';
+		var results_nq = '{{results_nq|safe}}';
+		results_w = results_w.substring(1, results_w.length-1);
+		results_nq = results_nq.substring(1, results_nq.length-1);
+		results_w = JSON.parse("[" + results_w + "]");
+		results_nq = JSON.parse("[" + results_nq + "]");
+
+		var ctxw = document.getElementById("wChart").getContext('2d');
+		var wChart = new Chart(ctxw, {
+		    type: 'line',
+		    data: {
+		        labels: rounds,
+		        datasets: [{
+		            label: 'Waiting time means',
+		            data: results_w
+		        }]
+		    },
+		});
+
+		var ctxnq = document.getElementById("nqChart").getContext('2d');
+		var nqChart = new Chart(ctxnq, {
+		    type: 'line',
+		    data: {
+		        labels: rounds,
+		        datasets: [{
+		            label: 'Number of people waiting in line means',
+		            data: results_nq
+		        }]
+		    },
+		});		
+	</script>
+</body>
+</html>
