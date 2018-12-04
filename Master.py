@@ -63,33 +63,6 @@ class Master:
                                (var_nq, center_vnq, lower_vnq, upper_vnq, precision_vnq)))
         return results_w, results_nq
 
-    def main(self):
-        k = 1_000  # TODO this value is arbitrary for now but must be set later
-        discipline = int(input("Type 1 for FCFS or 2 for LCFS (default=FCFS): ") or 1)
-        discipline -= 1
-        if discipline != 0 and discipline != 1:
-            print("invalid input")
-            return
-        rho = float(input("Insert utilization [0.2] [0.4] [0.6] [0.8] [0.9] (default=[0.2]): ") or 0.2)
-        if discipline:  # LCFS
-            if rho == 0.2 or rho == 0.4 or rho == 0.6 or rho == 0.8 or rho == 0.9:
-                print("Simulating...")
-                results_w, results_nq = self.run_LCFS(rho, k)
-            else:
-                print("invalid input")
-                return
-        else:  # FCFS
-            if rho == 0.2 or rho == 0.4 or rho == 0.6 or rho == 0.8 or rho == 0.9:
-                print("Simulating...")
-                results_w, results_nq = self.run_FCFS(rho, k)
-            else:
-                print("invalid input")
-                return
-        for i in range(len(results_w)):
-            print(results_w[i])
-        for i in range(len(results_nq)):
-            print(results_nq[i])
-
     def webmain(self, discipline, rho):
         # k = 1_000  # TODO this value is arbitrary for now but must be set later
         k = 50  # TODO this value is arbitrary for now but must be set later
@@ -127,13 +100,5 @@ class Master:
         for i in range(len(results_nq)):
             nq_vars.append(results_nq[i][1][0])
 
-        # w_means = results_w[0][0][::10]
-        # w_vars = results_w[::10][1][0]
-        # nq_means = results_nq[::10][0][0]
-        # nq_vars = results_nq[::10][1][0]
-
         return w_means, w_vars, nq_means, nq_vars
 
-# if __name__ == "__main__":
-#     master = Master()
-#     master.main()
