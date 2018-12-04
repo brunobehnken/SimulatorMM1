@@ -6,55 +6,67 @@
 	<script src="/static/js/jquery-3.2.1.js"></script>
 	<script src="/static/js/bootstrap.bundle.js"></script>
 	<link rel="stylesheet" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
-	<form method="POST" action="/">
-		<div class="form-group">
-			<div id="discipline" class="container">
-				<div class="row">
-					<p>Select a discipline:</p>
-				</div>
-				<div class="row">
-					<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						<label class="btn btn-secondary active">
-					    	<input type="radio" name="discipline" value="fcfs" checked="checked"> FCFS
-						</label>
-						<label class="btn btn-secondary">
-					    	<input type="radio" name="discipline" value="lcfs"> LCFS
-						</label>
+	<div class="title container text-center">
+		<h1> M/M/1 queue Simulation </h1>
+	</div>
+	<div class="main-div container text-center">
+		<form method="POST" action="/">
+			<div>
+				<div id="discipline">
+					<div>
+						<h1>Select a discipline:</h1>
+					</div>
+					<div>
+						<div class="discipline-selector btn-group btn-group-toggle" data-toggle="buttons">
+							<label class="btn btn-secondary btn-lg active">
+						    	<input type="radio" name="discipline" value="fcfs" checked="checked"> FCFS
+							</label>
+							<label class="btn btn-secondary btn-lg">
+						    	<input type="radio" name="discipline" value="lcfs"> LCFS
+							</label>
+						</div>
 					</div>
 				</div>
-			</div>
-			<br>	
-			<div id="rho" class="container">
-				<div class="row">		
-					<p>Select the utilization:</p>
-				</div>
-				<div class="row">
-					<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						<label class="btn btn-secondary">
-					    	<input type="radio" name="util" value="util2"> 0.2
-						</label>
-						<label class="btn btn-secondary">
-					    	<input type="radio" name="util" value="util4"> 0.4
-						</label>
-						<label class="btn btn-secondary active">
-					    	<input type="radio" name="util" value="util6" checked="checked"> 0.6
-						</label>
-						<label class="btn btn-secondary">
-					    	<input type="radio" name="util" value="util8"> 0.8
-						</label>
-						<label class="btn btn-secondary">
-					    	<input type="radio" name="util" value="util9"> 0.9
-						</label>
+				<br>	
+				<div id="rho">
+					<div>		
+						<h1>Select the utilization:</h1>
 					</div>
-				</div>	
+					<div>
+						<div class="rho-selector btn-group btn-group-toggle" data-toggle="buttons">
+							<label class="btn btn-secondary btn-lg">
+						    	<input type="radio" name="util" value="util2"> 0.2
+							</label>
+							<label class="btn btn-secondary btn-lg">
+						    	<input type="radio" name="util" value="util4"> 0.4
+							</label>
+							<label class="btn btn-secondary btn-lg active">
+						    	<input type="radio" name="util" value="util6" checked="checked"> 0.6
+							</label>
+							<label class="btn btn-secondary btn-lg">
+						    	<input type="radio" name="util" value="util8"> 0.8
+							</label>
+							<label class="btn btn-secondary btn-lg">
+						    	<input type="radio" name="util" value="util9"> 0.9
+							</label>
+						</div>
+					</div>	
+				</div>
+				<br>
+				<div>
+					<input id="simulate" type="submit" onClick="button_clicked()" class="btn btn-primary btn-lg" value="Simulate">
+					<div id="spinner"></div>
+				</div>
 			</div>
-			<br>
-			<div class="container">
-				<input type="submit" class="btn btn-primary" value="Simulate">
-			</div>
-		</div>
-	</form>
+		</form>
+	</div>
+	<script>
+		function button_clicked(){
+			document.getElementById("spinner").style.display = "block";
+		}
+	</script>
 </body>
 </html>
