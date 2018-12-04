@@ -5,7 +5,8 @@ from Statistics import Statistics
 # noinspection PyPep8Naming
 class Master:
 
-    def run_FCFS(self, rho, k):
+    @staticmethod
+    def run_FCFS(rho, k):
         """Runs the simulation for FCFS discipline with given parameters,
         returning its statistics"""
         results_w = []
@@ -34,7 +35,8 @@ class Master:
                                (var_nq, center_vnq, lower_vnq, upper_vnq, precision_vnq)))
         return results_w, results_nq
 
-    def run_LCFS(self, rho, k):
+    @staticmethod
+    def run_LCFS(rho, k):
         """Runs the simulation for LCFS discipline with given parameters,
         returning its statistics"""
         results_w = []
@@ -101,4 +103,3 @@ class Master:
             nq_vars.append(results_nq[i][1][0])
 
         return w_means, w_vars, nq_means, nq_vars
-
