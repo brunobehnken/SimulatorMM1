@@ -33,6 +33,7 @@ def home():
 def simul(discipline, rho):
 	master = Master()
 	results_w, results_w_vars, results_nq, results_nq_vars = master.webmain(discipline, rho)
+	discipline = "FCFS" if discipline == 1 else "LCFS"
 	return render_template("simulation.html", discipline=discipline, rho=rho, results_w=json.dumps(results_w), results_w_vars=json.dumps(results_w_vars), results_nq=json.dumps(results_nq), results_nq_vars=json.dumps(results_nq_vars))
 
 if __name__ == "__main__":
