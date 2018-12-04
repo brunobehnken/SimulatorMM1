@@ -6,15 +6,39 @@
 	<script src="/static/js/jquery-3.2.1.js"></script>
 	<script src="/static/js/bootstrap.bundle.js"></script>
 	<link rel="stylesheet" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
-	<h1>Selected {{discipline}} discipline and {{rho}} utilization</h1>
-	<!--<h1>Tempos de espera em fila: </h1>
-	<p>{{results_w}}</p>
-	<h1>Número de pessoas na fila de espera: </h1>
-	<p>{{results_nq}}</p>-->
-	<canvas id="wChart" width="400" height="400"></canvas>
-	<canvas id="nqChart" width="400" height="400"></canvas>
+	<div class="title container text-center">
+		<h1>Selected discipline {{discipline}} and {{rho}} utilization</h1>
+	</div>
+	<div class="graphs-div container text-center">
+		<div class="row">
+			<h1> Means of Waiting Times </h1>
+			<canvas id="wChart"></canvas>
+		</div>
+		<br>
+		<div class="row">
+			<h1> Variances of Waiting Times </h1>
+			<canvas id="wvarChart"></canvas>
+		</div>
+		<br>
+		<div class="row">
+			<h1> Means of Number of People in Waiting Line </h1>
+			<canvas id="nqChart"></canvas>
+		</div>
+		<br>
+		<div class="row">
+			<h1> Variances of Number of People in Waiting Line </h1>
+			<canvas id="nqvarChart"></canvas>
+		</div>		
+	</div>
+	<div class="container text-center">
+		<form method="GET" action="/">
+			<input id="back" type="submit" class="btn btn-secondary btn-lg" value="<< Back">
+		</form>	
+	</div>
+	<br><br>
 	<script>
 		var rounds = [];
 		for(var i = 0; i < 3200; i++){
@@ -26,6 +50,13 @@
 		results_nq = results_nq.substring(1, results_nq.length-1);
 		results_w = JSON.parse("[" + results_w + "]");
 		results_nq = JSON.parse("[" + results_nq + "]");
+
+		var results_w_vars = '{{results_w_vars|safe}}';
+		var results_nq_vars = '{{results_nq_vars|safe}}';
+		results_w_vars = results_w_vars.substring(1, results_w_vars.length-1);
+		results_nq_vars = results_nq_vars.substring(1, results_nq_vars.length-1);
+		results_w_vars = JSON.parse("[" + results_w_vars + "]");
+		results_nq_vars = JSON.parse("[" + results_nq_vars + "]");		
 
 		var ctxw = document.getElementById("wChart").getContext('2d');
 		var wChart = new Chart(ctxw, {
@@ -49,7 +80,31 @@
 		            data: results_nq
 		        }]
 		    },
-		});		
+		});
+
+		var ctxwvar = document.getElementById("wvarChart").getContext('2d');
+		var wvarChart = new Chart(ctxwvar, {
+		    type: 'line',
+		    data: {
+		        labels: rounds,
+		        datasets: [{
+		            label: 'Waiting time means',
+		            data: results_w_vars
+		        }]
+		    },
+		});
+
+		var ctxnqvar = document.getElementById("nqvarChart").getContext('2d');
+		var nqvarChart = new Chart(ctxnqvar, {
+		    type: 'line',
+		    data: {
+		        labels: rounds,
+		        datasets: [{
+		            label: 'Number of people waiting in line means',
+		            data: results_nq_vars
+		        }]
+		    },
+		});			
 	</script>
 </body>
 </html>
