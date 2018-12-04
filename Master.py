@@ -91,7 +91,8 @@ class Master:
             print(results_nq[i])
 
     def webmain(self, discipline, rho):
-        k = 1_000  # TODO this value is arbitrary for now but must be set later
+        # k = 1_000  # TODO this value is arbitrary for now but must be set later
+        k = 50  # TODO this value is arbitrary for now but must be set later
         discipline -= 1
         if discipline != 0 and discipline != 1:
             print("invalid input")
@@ -115,6 +116,8 @@ class Master:
         w_vars = []
         nq_means = []
         nq_vars = []
+        results_w = results_w[::10]
+        results_nq = results_nq[::10]
         for i in range(len(results_w)):
             w_means.append(results_w[i][0][0])
         for i in range(len(results_w)):
@@ -122,7 +125,12 @@ class Master:
         for i in range(len(results_nq)):
             nq_means.append(results_nq[i][0][0])
         for i in range(len(results_nq)):
-            nq_vars.append(results_nq[i][1][0])            
+            nq_vars.append(results_nq[i][1][0])
+
+        # w_means = results_w[0][0][::10]
+        # w_vars = results_w[::10][1][0]
+        # nq_means = results_nq[::10][0][0]
+        # nq_vars = results_nq[::10][1][0]
 
         return w_means, w_vars, nq_means, nq_vars
 
