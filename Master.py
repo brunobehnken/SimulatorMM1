@@ -112,13 +112,19 @@ class Master:
                 return
 
         w_means = []
+        w_vars = []
         nq_means = []
+        nq_vars = []
         for i in range(len(results_w)):
             w_means.append(results_w[i][0][0])
+        for i in range(len(results_w)):
+            w_vars.append(results_w[i][1][0])
         for i in range(len(results_nq)):
             nq_means.append(results_nq[i][0][0])
+        for i in range(len(results_nq)):
+            nq_vars.append(results_nq[i][1][0])            
 
-        return w_means, nq_means
+        return w_means, w_vars, nq_means, nq_vars
 
 # if __name__ == "__main__":
 #     master = Master()
