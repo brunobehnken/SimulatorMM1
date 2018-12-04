@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	<script src="/static/js/Chart.bundle.js"></script>
-	<script src="/static/js/jquery-3.2.1.js"></script>
-	<script src="/static/js/bootstrap.bundle.js"></script>
-	<link rel="stylesheet" href="/static/css/bootstrap.css">
-	<link rel="stylesheet" href="/static/css/main.css">
+    <title></title>
+    <script src="/static/js/Chart.bundle.js"></script>
+    <script src="/static/js/jquery-3.2.1.js"></script>
+    <script src="/static/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
-	<div class="title container text-center">
-		<h1>Selected discipline {{discipline}} and {{rho}} utilization</h1>
-	</div>
-	<div class="graphs-div container text-center">
-		<div class="row">
-			<h1> Means of Waiting Times </h1>
-			<canvas id="wChart"></canvas>
-		</div>
-		<br>
-		<div class="row">
-			<h1> Variances of Waiting Times </h1>
-			<canvas id="wvarChart"></canvas>
-		</div>
-		<br>
-		<div class="row">
-			<h1> Means of Number of People in Waiting Line </h1>
-			<canvas id="nqChart"></canvas>
-		</div>
-		<br>
-		<div class="row">
-			<h1> Variances of Number of People in Waiting Line </h1>
-			<canvas id="nqvarChart"></canvas>
-		</div>		
-	</div>
-	<div class="container text-center">
-		<form method="GET" action="/">
-			<input id="back" type="submit" class="btn btn-secondary btn-lg" value="<< Back">
-		</form>	
-	</div>
-	<br><br>
-	<script>
+<div class="title container text-center">
+    <h1>Selected discipline {{discipline}} and {{rho}} utilization</h1>
+</div>
+<div class="graphs-div container text-center">
+    <div class="row">
+        <h1> Means of Waiting Times </h1>
+        <canvas id="wChart"></canvas>
+    </div>
+    <br>
+    <div class="row">
+        <h1> Variances of Waiting Times </h1>
+        <canvas id="wvarChart"></canvas>
+    </div>
+    <br>
+    <div class="row">
+        <h1> Means of Number of People in Waiting Line </h1>
+        <canvas id="nqChart"></canvas>
+    </div>
+    <br>
+    <div class="row">
+        <h1> Variances of Number of People in Waiting Line </h1>
+        <canvas id="nqvarChart"></canvas>
+    </div>
+</div>
+<div class="container text-center">
+    <form method="GET" action="/">
+        <input id="back" type="submit" class="btn btn-secondary btn-lg" value="<< Back">
+    </form>
+</div>
+<br><br>
+<script>
 		var rounds = [];
 		for(var i = 0; i < 320; i++){
 			rounds.push(i + 1);
@@ -59,16 +59,63 @@
 		results_nq_vars = JSON.parse("[" + results_nq_vars + "]");		
 
 		var ctxw = document.getElementById("wChart").getContext('2d');
-		var wChart = new Chart(ctxw, {
-		    type: 'line',
-		    data: {
-		        labels: rounds,
-		        datasets: [{
-		            label: 'Waiting time means',
-		            data: results_w
-		        }]
-		    },
-		});
+		var config = {
+            type: 'line',
+            data: {
+                labels: rounds,
+                datasets: [{
+                    label: 'Waiting time means',
+                    backgroundColor: 'rgb(54,  162, 235)', // blue
+                    borderColor: 'rgb(54,  162, 235)', // blue
+                    data: results_w,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {display: false},
+                tooltips: {enabled: false},
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Means'
+                        }
+                    }]
+                }
+            }
+        };
+		// var wChart = new Chart(ctxw, {
+		//     type: 'line',
+		//     data: {
+		//         labels: rounds,
+		//         datasets: [{
+		//             label: 'Waiting time means',
+		//             data: results_w
+		//         }]
+		//     },
+		// });
+		datasets = []
+		datasets.push({
+			label: 'Waiting time means',
+            backgroundColor: 'rgb(54,  162, 235)', // blue
+            borderColor: 'rgb(54,  162, 235)', // blue
+            data: results_w,
+            fill: false
+        });
+		var wChart = new Chart(ctxw, config);
 
 		var ctxnq = document.getElementById("nqChart").getContext('2d');
 		var nqChart = new Chart(ctxnq, {
