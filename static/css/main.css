@@ -12,7 +12,7 @@ h1 { font-weight: 300; }
 #simulator { display: -webkit-inline-box; }
 #simulate { margin-top: 10%; font-size: 25px; }
 #back { margin-top: 3%; }
-#madeby { margin-top: 20%; color: darkgrey;}
+#madeby { color: darkgrey; position: fixed; bottom: 0; width: 100%; text-align: center; }
 
 canvas { background: #e0e0e0; width: 1000px !important; height: 500px !important;}
 
