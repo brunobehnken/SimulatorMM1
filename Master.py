@@ -69,8 +69,8 @@ class Master:
         """Main function for running the simulator, to be called by Flask front-end.
         Returns the means and variances with all confidence intervals for both
         waiting times and nunber of client at the queue."""
-        # k = 1_000  # TODO this value is arbitrary for now but must be set later
-        k = 50  # TODO this value is arbitrary for now but must be set later
+        k = 1_000  # TODO this value is arbitrary for now but must be set later
+        # k = 50  # TODO this value is arbitrary for now but must be set later
         discipline -= 1
         if discipline != 0 and discipline != 1:
             print("invalid input")
