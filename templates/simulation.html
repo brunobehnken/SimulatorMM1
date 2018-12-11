@@ -98,7 +98,6 @@
             data: {
                 labels: rounds,
                 datasets: [{
-					label: 'Means of waiting times',
 		            backgroundColor: 'rgb(54,  162, 235)', // blue
 		            borderColor: 'rgb(54,  162, 235)', // blue
 		            data: results_w,
@@ -125,6 +124,9 @@
                     mode: 'nearest',
                     intersect: true
                 },
+		legend: {
+                    display: false,
+                },   
                 scales: {
                     xAxes: [{
                         display: true,
@@ -151,7 +153,6 @@
             data: {
                 labels: rounds,
                 datasets: [{
-					label: 'Means of number of people waiting in line',
 		            backgroundColor: 'rgb(255,  99, 132)', // red
 		            borderColor: 'rgb(255,  99, 132)', // red
 		            data: results_nq,
@@ -178,6 +179,9 @@
                     mode: 'nearest',
                     intersect: true
                 },
+                legend: {
+                    display: false,
+                },		    
                 scales: {
                     xAxes: [{
                         display: true,
@@ -204,7 +208,6 @@
             data: {
                 labels: rounds,
                 datasets: [{
-					label: 'Variances of waiting times',
 		            backgroundColor: 'rgb(255, 159,  64)', // orange
 		            borderColor: 'rgb(255, 159,  64)', // orange
 		            data: results_w_vars,
@@ -231,6 +234,9 @@
                     mode: 'nearest',
                     intersect: true
                 },
+                legend: {
+                    display: false,
+                },		    
                 scales: {
                     xAxes: [{
                         display: true,
@@ -257,7 +263,6 @@
             data: {
                 labels: rounds,
                 datasets: [{
-					label: 'Variances of number of people waiting in line',
 		            backgroundColor: 'rgb(75,  192, 192)', // green
 		            borderColor: 'rgb(75,  192, 192)', // green
 		            data: results_nq_vars,
@@ -284,6 +289,9 @@
                     mode: 'nearest',
                     intersect: true
                 },
+                legend: {
+                    display: false,
+                },		    
                 scales: {
                     xAxes: [{
                         display: true,
