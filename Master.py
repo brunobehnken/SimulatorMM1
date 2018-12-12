@@ -71,7 +71,6 @@ class Master:
         Returns the means and variances with all confidence intervals for both
         waiting times and nunber of client at the queue."""
         k = 1_280  # TODO this value is arbitrary for now but must be set later
-        # k = 50  # TODO this value is arbitrary for now but must be set later
         discipline -= 1
         start_time = time()
         if discipline != 0 and discipline != 1:
