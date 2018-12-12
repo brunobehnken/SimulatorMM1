@@ -94,18 +94,8 @@ class Master:
         end_time = time()
         print(f"Execution time: {end_time - start_time}")
 
-        w_means = []
-        w_means_icl = []
-        w_means_icu = []
-        w_vars = []
-        w_vars_icl = []
-        w_vars_icu = []
-        nq_means = []
-        nq_means_icl = []
-        nq_means_icu = []
-        nq_vars = []
-        nq_vars_icl = []
-        nq_vars_icu = []
+        w_means, w_means_icl, w_means_icu, w_vars, w_vars_icl, w_vars_icu = [], [], [], [], [], []
+        nq_means, nq_means_icl, nq_means_icu, nq_vars, nq_vars_icl, nq_vars_icu = [], [], [], [], [], []
         results_w = results_w[::10]
         results_nq = results_nq[::10]
         for i in range(len(results_w)):
