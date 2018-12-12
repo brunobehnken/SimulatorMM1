@@ -86,7 +86,7 @@ class SimulatorFCFS:
 
     def transient_phase(self):
         """Runs the simulator until the transient phase is finished, which occurs
-        when 30 delta variance values under 1.0e-04 precision are found"""
+        when diff_limit delta variance values under threshold precision are found"""
         stats = Statistics()
         means_w = []
         old_var = 0
@@ -196,7 +196,7 @@ class SimulatorLCFS:
 
     def transient_phase(self):
         """Runs the simulator until the transient phase is finished, which occurs
-        when 30 delta variance values under 1.0e-04 precision are found"""
+        when 'diff_limit' delta variance values under 'threshold' precision are found"""
         stats = Statistics()
         means_w = []
         old_var = 0
