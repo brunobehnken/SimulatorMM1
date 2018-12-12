@@ -1,3 +1,5 @@
+import time
+
 from Simulator import SimulatorFCFS, SimulatorLCFS
 from Statistics import Statistics
 
@@ -72,6 +74,7 @@ class Master:
         k = 1_000  # TODO this value is arbitrary for now but must be set later
         # k = 50  # TODO this value is arbitrary for now but must be set later
         discipline -= 1
+        start_time = time.time()
         if discipline != 0 and discipline != 1:
             print("invalid input")
             return
@@ -89,6 +92,8 @@ class Master:
             else:
                 print("invalid input")
                 return
+        end_time = time.time()
+        print(f"Execution time: {end_time - start_time}")
 
         w_means = []
         w_means_icl = []
