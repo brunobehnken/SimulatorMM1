@@ -36,12 +36,14 @@ def home():
 def simul(discipline, rho):
     if discipline == 1:
         sim_fcfs = SimulatorFCFS(rho)
-        variance = sim_fcfs.transient_phase()
-        return render_template("simulation.html", discipline=discipline, rho=rho, variance=json.dumps(variance))
+        means, variance = sim_fcfs.transient_phase()
+        return render_template("simulation.html", discipline="FCFS", rho=rho,
+                               variance=json.dumps(variance), means=json.dumps(means))
     else:
         sim_lcfs = SimulatorLCFS(rho)
-        variance = sim_lcfs.transient_phase()
-        return render_template("simulation.html", discipline=discipline, rho=rho, variance=json.dumps(variance))
+        means, variance = sim_lcfs.transient_phase()
+        return render_template("simulation.html", discipline="LCFS", rho=rho,
+                               variance=json.dumps(variance), means=json.dumps(means))
 
 
 if __name__ == "__main__":

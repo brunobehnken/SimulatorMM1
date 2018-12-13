@@ -14,8 +14,13 @@
 </div>
 <div class="graphs-div container text-center">
     <div class="row">
-        <h1> Transient Phase </h1>
-        <canvas id="tChart"></canvas>
+        <h1> Transient Phase Mean of Means</h1>
+        <canvas id="mChart"></canvas>
+    </div>
+    <br>
+    <div class="row">
+        <h1> Transient Phase Means Variance</h1>
+        <canvas id="vChart"></canvas>
     </div>
 </div>
 <div class="container text-center">
@@ -25,6 +30,58 @@
 </div>
 <br><br>
 <script>
+        var means = '{{means|safe}}';
+		means = means.substring(1, means.length-1);
+		means = JSON.parse("[" + means + "]");
+
+		var rounds = [];
+		for(var i = 0; i < means.length; i++) {
+			rounds.push(i + 1);
+		}
+
+		var ctxmean = document.getElementById("mChart").getContext('2d');
+		var config = {
+            type: 'line',
+            data: {
+                labels: rounds,
+                datasets: [{
+		            backgroundColor: 'rgb(54,  162, 235)', // blue
+		            borderColor: 'rgb(54,  162, 235)', // blue
+		            data: means,
+		            fill: false
+        		}]
+            },
+            options: {
+                responsive: true,
+                title: {display: false},
+                tooltips: {enabled: false},
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+		        legend: {
+                    display: false,
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Means'
+                        }
+                    }]
+                }
+            }
+        };
+		var wmeanChart = new Chart(ctxmean, config);
+
 		var variance = '{{variance|safe}}';
 		variance = variance.substring(1, variance.length-1);
 		variance = JSON.parse("[" + variance + "]");
@@ -34,7 +91,7 @@
 			rounds.push(i + 1);
 		}
 
-		var ctxw = document.getElementById("tChart").getContext('2d');
+		var ctxw = document.getElementById("vChart").getContext('2d');
 		var config = {
             type: 'line',
             data: {
