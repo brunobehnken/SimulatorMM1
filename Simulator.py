@@ -89,6 +89,7 @@ class SimulatorFCFS:
         when diff_limit delta variance values under threshold precision are found"""
         stats = Statistics()
         means_w = []
+        var = []
         old_var = 0
         diff_counter = 0
 
@@ -104,12 +105,13 @@ class SimulatorFCFS:
                 means_w.append(stats.calculate_mean(res[0]))
             var_w = stats.calculate_incremental_variance(means_w)
             means_w.clear()
+            var.append(var_w)
             diff = abs(var_w - old_var)
             old_var = var_w
             if diff < threshold:
                 diff_counter += 1
                 if diff_counter == diff_limit:
-                    break
+                    return var
 
 
 class SimulatorLCFS:
@@ -199,6 +201,7 @@ class SimulatorLCFS:
         when 'diff_limit' delta variance values under 'threshold' precision are found"""
         stats = Statistics()
         means_w = []
+        var = []
         old_var = 0
         diff_counter = 0
 
@@ -214,9 +217,10 @@ class SimulatorLCFS:
                 means_w.append(stats.calculate_mean(res[0]))
             var_w = stats.calculate_incremental_variance(means_w)
             means_w.clear()
+            var.append(var_w)
             diff = abs(var_w - old_var)
             old_var = var_w
             if diff < threshold:
                 diff_counter += 1
                 if diff_counter == diff_limit:
-                    break
+                    return var

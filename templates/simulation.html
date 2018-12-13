@@ -14,23 +14,8 @@
 </div>
 <div class="graphs-div container text-center">
     <div class="row">
-        <h1> Means of Waiting Times </h1>
-        <canvas id="wChart"></canvas>
-    </div>
-    <br>
-    <div class="row">
-        <h1> Variances of Waiting Times </h1>
-        <canvas id="wvarChart"></canvas>
-    </div>
-    <br>
-    <div class="row">
-        <h1> Means of Number of People in Waiting Line </h1>
-        <canvas id="nqChart"></canvas>
-    </div>
-    <br>
-    <div class="row">
-        <h1> Variances of Number of People in Waiting Line </h1>
-        <canvas id="nqvarChart"></canvas>
+        <h1> Transient Phase </h1>
+        <canvas id="tChart"></canvas>
     </div>
 </div>
 <div class="container text-center">
@@ -40,59 +25,16 @@
 </div>
 <br><br>
 <script>
+		var variance = '{{variance|safe}}';
+		variance = variance.substring(1, variance.length-1);
+		variance = JSON.parse("[" + variance + "]");
+
 		var rounds = [];
-		for(var i = 0; i < 320; i++) {
+		for(var i = 0; i < variance.length; i++) {
 			rounds.push(i + 1);
 		}
-		var results_w = '{{results_w|safe}}';
-		results_w = results_w.substring(1, results_w.length-1);
-		results_w = JSON.parse("[" + results_w + "]");
 
-		var results_w_icl = '{{results_w_icl|safe}}';
-		results_w_icl = results_w_icl.substring(1, results_w_icl.length-1);
-		results_w_icl = JSON.parse("[" + results_w_icl + "]");
-
-		var results_w_icu = '{{results_w_icu|safe}}';
-		results_w_icu = results_w_icu.substring(1, results_w_icu.length-1);
-		results_w_icu = JSON.parse("[" + results_w_icu + "]");
-
-		var results_nq = '{{results_nq|safe}}';
-		results_nq = results_nq.substring(1, results_nq.length-1);
-		results_nq = JSON.parse("[" + results_nq + "]");
-
-		var results_nq_icl = '{{results_nq_icl|safe}}';
-		results_nq_icl = results_nq_icl.substring(1, results_nq_icl.length-1);
-		results_nq_icl = JSON.parse("[" + results_nq_icl + "]");
-
-		var results_nq_icu = '{{results_nq_icu|safe}}';
-		results_nq_icu = results_nq_icu.substring(1, results_nq_icu.length-1);
-		results_nq_icu = JSON.parse("[" + results_nq_icu + "]");
-
-		var results_w_vars = '{{results_w_vars|safe}}';
-		results_w_vars = results_w_vars.substring(1, results_w_vars.length-1);
-		results_w_vars = JSON.parse("[" + results_w_vars + "]");
-
-		var results_w_vars_icl = '{{results_w_vars_icl|safe}}';
-		results_w_vars_icl = results_w_vars_icl.substring(1, results_w_vars_icl.length-1);
-		results_w_vars_icl = JSON.parse("[" + results_w_vars_icl + "]");
-
-		var results_w_vars_icu = '{{results_w_vars_icu|safe}}';
-		results_w_vars_icu = results_w_vars_icu.substring(1, results_w_vars_icu.length-1);
-		results_w_vars_icu = JSON.parse("[" + results_w_vars_icu + "]");
-
-		var results_nq_vars = '{{results_nq_vars|safe}}';
-		results_nq_vars = results_nq_vars.substring(1, results_nq_vars.length-1);
-		results_nq_vars = JSON.parse("[" + results_nq_vars + "]");
-
-		var results_nq_vars_icl = '{{results_nq_vars_icl|safe}}';
-		results_nq_vars_icl = results_nq_vars_icl.substring(1, results_nq_vars_icl.length-1);
-		results_nq_vars_icl = JSON.parse("[" + results_nq_vars_icl + "]");
-
-		var results_nq_vars_icu = '{{results_nq_vars_icu|safe}}';
-		results_nq_vars_icu = results_nq_vars_icu.substring(1, results_nq_vars_icu.length-1);
-		results_nq_vars_icu = JSON.parse("[" + results_nq_vars_icu + "]");
-
-		var ctxw = document.getElementById("wChart").getContext('2d');
+		var ctxw = document.getElementById("tChart").getContext('2d');
 		var config = {
             type: 'line',
             data: {
@@ -100,21 +42,9 @@
                 datasets: [{
 		            backgroundColor: 'rgb(54,  162, 235)', // blue
 		            borderColor: 'rgb(54,  162, 235)', // blue
-		            data: results_w,
+		            data: variance,
 		            fill: false
-        		}, {
-					label: '',
-		            backgroundColor: 'rgb(118, 226, 299)', // light blue
-		            borderColor: 'rgb(118, 226, 299)', // light blue
-		            data: results_w_icl,
-		            fill: false
-		        }, {
-					label: '',
-		            backgroundColor: 'rgb(118, 226, 299)', // light blue
-		            borderColor: 'rgb(118, 226, 299)', // light blue
-		            data: results_w_icu,
-		            fill: '-1'
-		        }]
+        		}]
             },
             options: {
                 responsive: true,
@@ -124,7 +54,7 @@
                     mode: 'nearest',
                     intersect: true
                 },
-		legend: {
+		        legend: {
                     display: false,
                 },   
                 scales: {
@@ -139,7 +69,7 @@
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'Means'
+                            labelString: 'Vars'
                         }
                     }]
                 }
@@ -147,170 +77,6 @@
         };
 		var wChart = new Chart(ctxw, config);
 
-		var ctxnq = document.getElementById("nqChart").getContext('2d');
-		var config = {
-            type: 'line',
-            data: {
-                labels: rounds,
-                datasets: [{
-		            backgroundColor: 'rgb(255,  99, 132)', // red
-		            borderColor: 'rgb(255,  99, 132)', // red
-		            data: results_nq,
-		            fill: false
-        		}, {
-					label: '',
-		            backgroundColor: 'rgb(255, 163, 196)', // light red
-		            borderColor: 'rgb(255, 163, 196)', // light red
-		            data: results_nq_icl,
-		            fill: false
-		        }, {
-					label: '',
-		            backgroundColor: 'rgb(255, 163, 196)', // light red
-		            borderColor: 'rgb(255, 163, 196)', // light red
-		            data: results_nq_icu,
-		            fill: '-1'
-		        }]
-            },
-            options: {
-                responsive: true,
-                title: {display: false},
-                tooltips: {enabled: false},
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
-                },
-                legend: {
-                    display: false,
-                },		    
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Time'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Means'
-                        }
-                    }]
-                }
-            }
-        };
-		var wChart = new Chart(ctxnq, config);
-
-		var ctxwvar = document.getElementById("wvarChart").getContext('2d');
-		var config = {
-            type: 'line',
-            data: {
-                labels: rounds,
-                datasets: [{
-		            backgroundColor: 'rgb(255, 159,  64)', // orange
-		            borderColor: 'rgb(255, 159,  64)', // orange
-		            data: results_w_vars,
-		            fill: false
-        		}, {
-					label: '',
-		            backgroundColor: 'rgb(255, 223, 128)', // light orange
-		            borderColor: 'rgb(255, 223, 128)', // light orange
-		            data: results_w_vars_icl,
-		            fill: false
-		        }, {
-					label: '',
-		            backgroundColor: 'rgb(255, 223, 128)', // light orange
-		            borderColor: 'rgb(255, 223, 128)', // light orange
-		            data: results_w_vars_icu,
-		            fill: '-1'
-		        }]
-            },
-            options: {
-                responsive: true,
-                title: {display: false},
-                tooltips: {enabled: false},
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
-                },
-                legend: {
-                    display: false,
-                },		    
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Time'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Means'
-                        }
-                    }]
-                }
-            }
-        };
-		var wvarChart = new Chart(ctxwvar, config);
-
-		var ctxnqvar = document.getElementById("nqvarChart").getContext('2d');
-		var config = {
-            type: 'line',
-            data: {
-                labels: rounds,
-                datasets: [{
-		            backgroundColor: 'rgb(75,  192, 192)', // green
-		            borderColor: 'rgb(75,  192, 192)', // green
-		            data: results_nq_vars,
-		            fill: false
-        		}, {
-					label: '',
-		            backgroundColor: 'rgb(139, 255, 255)', // light green
-		            borderColor: 'rgb(139, 255, 255)', // light green
-		            data: results_nq_vars_icl,
-		            fill: false
-		        }, {
-					label: '',
-		            backgroundColor: 'rgb(139, 255, 255)', // light green
-		            borderColor: 'rgb(139, 255, 255)', // light green
-		            data: results_nq_vars_icu,
-		            fill: '-1'
-		        }]
-            },
-            options: {
-                responsive: true,
-                title: {display: false},
-                tooltips: {enabled: false},
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
-                },
-                legend: {
-                    display: false,
-                },		    
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Time'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Means'
-                        }
-                    }]
-                }
-            }
-        };
-		var nqvarChart = new Chart(ctxnqvar, config);			
 	</script>
 </body>
 </html>

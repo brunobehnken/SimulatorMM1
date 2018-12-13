@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from Master import Master
 import json
 
+from Simulator import SimulatorLCFS, SimulatorFCFS
+
 app = Flask(__name__)
 
 
@@ -32,25 +34,14 @@ def home():
 
 @app.route("/simul/disc<int:discipline>util<float:rho>")
 def simul(discipline, rho):
-    master = Master()
-    results_w, results_w_icl, results_w_icu, \
-        results_w_vars, results_w_vars_icl, results_w_vars_icu, \
-        results_nq, results_nq_icl, results_nq_icu, \
-        results_nq_vars, results_nq_vars_icl, results_nq_vars_icu = master.webmain(discipline, rho)
-    discipline = "FCFS" if discipline == 1 else "LCFS"
-    return render_template("simulation.html", discipline=discipline, rho=rho,
-                           results_w=json.dumps(results_w),
-                           results_w_icl=json.dumps(results_w_icl),
-                           results_w_icu=json.dumps(results_w_icu),
-                           results_w_vars=json.dumps(results_w_vars),
-                           results_w_vars_icl=json.dumps(results_w_vars_icl),
-                           results_w_vars_icu=json.dumps(results_w_vars_icu),
-                           results_nq=json.dumps(results_nq),
-                           results_nq_icl=json.dumps(results_nq_icl),
-                           results_nq_icu=json.dumps(results_nq_icu),
-                           results_nq_vars=json.dumps(results_nq_vars),
-                           results_nq_vars_icl=json.dumps(results_nq_vars_icl),
-                           results_nq_vars_icu=json.dumps(results_nq_vars_icu))
+    if discipline == 1:
+        sim_fcfs = SimulatorFCFS(rho)
+        variance = sim_fcfs.transient_phase()
+        return render_template("simulation.html", discipline=discipline, rho=rho, variance=json.dumps(variance))
+    else:
+        sim_lcfs = SimulatorLCFS(rho)
+        variance = sim_lcfs.transient_phase()
+        return render_template("simulation.html", discipline=discipline, rho=rho, variance=json.dumps(variance))
 
 
 if __name__ == "__main__":
