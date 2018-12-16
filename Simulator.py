@@ -86,30 +86,45 @@ class SimulatorFCFS:
 
     def transient_phase(self):
         """Runs the simulator until the transient phase is finished, which occurs
-        when diff_limit delta variance values under threshold precision are found"""
+        when 'chunk_size' variance values under 'threshold' precision are found"""
         stats = Statistics()
         means_w = []
-        old_var = 0
-        diff_counter = 0
+        var = []
+        count = 0
 
-        if self.__rho == 0.8 or self.__rho == 0.9:
-            threshold = 1.0e-01
-            diff_limit = 150
+        # threshold adjustment
+        if self.__rho == 0.2 or self.__rho == 0.4:
+            threshold = 0.001
+        elif self.__rho == 0.6:
+            threshold = 0.01
+        elif self.__rho == 0.8:
+            threshold = 0.5
         else:
-            threshold = 1.0e-04
-            diff_limit = 30
+            threshold = 1.0
+        chunk_size = 10
+
         while True:
+            # calculate next variance for the variance list
             for i in range(0, 10):
                 res = self.simulate_FCFS(100)
                 means_w.append(stats.calculate_mean(res[0]))
             var_w = stats.calculate_incremental_variance(means_w)
             means_w.clear()
-            diff = abs(var_w - old_var)
-            old_var = var_w
-            if diff < threshold:
-                diff_counter += 1
-                if diff_counter == diff_limit:
-                    break
+
+            if not var:  # if variance list is empty
+                var.append(var_w)
+                continue
+
+            for i in range(0, len(var)):
+                if abs(var_w - var[i]) < threshold:
+                    count += 1
+            if count == len(var):  # if we found a number in the list threshold, append
+                var.append(var_w)
+                if len(var) == chunk_size:  # if the list has all members in the threshold, end of transient phase
+                    return
+            else:  # if the member is not in the list threshold, discart list
+                var.clear()
+            count = 0  # reset count
 
 
 class SimulatorLCFS:
@@ -196,27 +211,42 @@ class SimulatorLCFS:
 
     def transient_phase(self):
         """Runs the simulator until the transient phase is finished, which occurs
-        when 'diff_limit' delta variance values under 'threshold' precision are found"""
+        when 'chunk_size' variance values under 'threshold' precision are found"""
         stats = Statistics()
         means_w = []
-        old_var = 0
-        diff_counter = 0
+        var = []
+        count = 0
 
-        if self.__rho == 0.8 or self.__rho == 0.9:
-            threshold = 1.0e-01
-            diff_limit = 150
+        # threshold adjustment
+        if self.__rho == 0.2 or self.__rho == 0.4:
+            threshold = 0.001
+        elif self.__rho == 0.6:
+            threshold = 0.01
+        elif self.__rho == 0.8:
+            threshold = 0.5
         else:
-            threshold = 1.0e-04
-            diff_limit = 30
+            threshold = 1.0
+        chunk_size = 10
+
         while True:
+            # calculate next variance for the variance list
             for i in range(0, 10):
                 res = self.simulate_LCFS(100)
                 means_w.append(stats.calculate_mean(res[0]))
             var_w = stats.calculate_incremental_variance(means_w)
             means_w.clear()
-            diff = abs(var_w - old_var)
-            old_var = var_w
-            if diff < threshold:
-                diff_counter += 1
-                if diff_counter == diff_limit:
-                    break
+
+            if not var:  # if variance list is empty
+                var.append(var_w)
+                continue
+
+            for i in range(0, len(var)):
+                if abs(var_w - var[i]) < threshold:
+                    count += 1
+            if count == len(var):  # if we found a number in the list threshold, append
+                var.append(var_w)
+                if len(var) == chunk_size:  # if the list has all members in the threshold, end of transient phase
+                    return
+            else:  # if the member is not in the list threshold, discart list
+                var.clear()
+            count = 0  # reset count
