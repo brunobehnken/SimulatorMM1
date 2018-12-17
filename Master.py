@@ -7,14 +7,14 @@ from Statistics import Statistics
 class Master:
 
     @staticmethod
-    def run_FCFS(rho, k):
+    def run_FCFS(rho, k, seed=None):
         """Runs the simulation for FCFS discipline with given parameters,
         returning its statistics"""
         results_w = []
         results_nq = []
         stat_w = Statistics()
         stat_nq = Statistics()
-        simulator = SimulatorFCFS(rho)
+        simulator = SimulatorFCFS(rho, seed)
         simulator.transient_phase()
         for i in range(0, 3200):
             res = simulator.simulate_FCFS(k)
@@ -37,14 +37,14 @@ class Master:
         return results_w, results_nq
 
     @staticmethod
-    def run_LCFS(rho, k):
+    def run_LCFS(rho, k, seed=None):
         """Runs the simulation for LCFS discipline with given parameters,
         returning its statistics"""
         results_w = []
         results_nq = []
         stat_w = Statistics()
         stat_nq = Statistics()
-        simulator = SimulatorLCFS(rho)
+        simulator = SimulatorLCFS(rho, seed)
         simulator.transient_phase()
         for i in range(0, 3200):
             res = simulator.simulate_LCFS(k)
@@ -66,11 +66,10 @@ class Master:
                                (var_nq, center_vnq, lower_vnq, upper_vnq, precision_vnq)))
         return results_w, results_nq
 
-    def webmain(self, discipline, rho):
+    def webmain(self, discipline, rho, k, seed=None):
         """Main function for running the simulator, to be called by Flask front-end.
         Returns the means and variances with all confidence intervals for both
         waiting times and nunber of client at the queue."""
-        k = 1_280  # TODO this value is arbitrary for now but must be set later
         discipline -= 1
         start_time = time()
         if discipline != 0 and discipline != 1:
@@ -79,14 +78,14 @@ class Master:
         if discipline:  # LCFS
             if rho == 0.2 or rho == 0.4 or rho == 0.6 or rho == 0.8 or rho == 0.9:
                 print("Simulating...")
-                results_w, results_nq = self.run_LCFS(rho, k)
+                results_w, results_nq = self.run_LCFS(rho, k, seed)
             else:
                 print("invalid input")
                 return
         else:  # FCFS
             if rho == 0.2 or rho == 0.4 or rho == 0.6 or rho == 0.8 or rho == 0.9:
                 print("Simulating...")
-                results_w, results_nq = self.run_FCFS(rho, k)
+                results_w, results_nq = self.run_FCFS(rho, k, seed)
             else:
                 print("invalid input")
                 return

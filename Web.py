@@ -24,19 +24,23 @@ def home():
             rho = 0.8
         elif request.form['util'] == 'util9':
             rho = 0.9
-        return redirect(url_for('simul', discipline=discipline, rho=rho))
+
+        # TODO must check if round size and seed were informed. If not, default values are 1_280 and None.
+        k = 1_280  # TODO must implement round size request box on front-end. This line is a place-holder.
+        seed = None  # TODO must implement seed request box on front-end. This line is a place-holder.
+        return redirect(url_for('simul', discipline=discipline, rho=rho, seed=seed, k=k))
 
     elif request.method == 'GET':
         return render_template("home.html")
 
 
 @app.route("/simul/disc<int:discipline>util<float:rho>")
-def simul(discipline, rho):
+def simul(discipline, rho, seed, k):
     master = Master()
     results_w, results_w_icl, results_w_icu, \
         results_w_vars, results_w_vars_icl, results_w_vars_icu, \
         results_nq, results_nq_icl, results_nq_icu, \
-        results_nq_vars, results_nq_vars_icl, results_nq_vars_icu = master.webmain(discipline, rho)
+        results_nq_vars, results_nq_vars_icl, results_nq_vars_icu = master.webmain(discipline, rho, k, seed)
     discipline = "FCFS" if discipline == 1 else "LCFS"
     return render_template("simulation.html", discipline=discipline, rho=rho,
                            results_w=json.dumps(results_w),
