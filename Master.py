@@ -66,7 +66,7 @@ class Master:
                                (var_nq, center_vnq, lower_vnq, upper_vnq, precision_vnq)))
         return results_w, results_nq
 
-    def webmain(self, discipline, rho, k, seed=None):
+    def webmain(self, discipline, rho, k=1_280, seed=None):
         """Main function for running the simulator, to be called by Flask front-end.
         Returns the means and variances with all confidence intervals for both
         waiting times and nunber of client at the queue."""
@@ -90,7 +90,8 @@ class Master:
                 print("invalid input")
                 return
         end_time = time()
-        print(f"Execution time: {end_time - start_time}")
+        execution_time = end_time - start_time
+        print(f"Execution time: {execution_time}")
 
         w_means, w_means_icl, w_means_icu, w_vars, w_vars_icl, w_vars_icu = [], [], [], [], [], []
         nq_means, nq_means_icl, nq_means_icu, nq_vars, nq_vars_icl, nq_vars_icu = [], [], [], [], [], []
@@ -114,4 +115,5 @@ class Master:
         return w_means, w_means_icl, w_means_icu, \
             w_vars, w_vars_icl, w_vars_icu, \
             nq_means, nq_means_icl, nq_means_icu, \
-            nq_vars, nq_vars_icl, nq_vars_icu
+            nq_vars, nq_vars_icl, nq_vars_icu, \
+            execution_time
