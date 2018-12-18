@@ -10,6 +10,7 @@ h1 { font-weight: 300; }
 .graphs-div > div.row > h1 { margin-top: 3%; margin-bottom: 2%; }
 .discipline-selector { margin-top: 3%; }
 .rho-selector { margin-top: 3%; }
+#other { display: inline-grid; }
 #simulator { display: -webkit-inline-box; }
 #simulate { margin-top: 10%; font-size: 25px; }
 #back { margin-top: 3%; }
