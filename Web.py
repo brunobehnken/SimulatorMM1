@@ -25,10 +25,11 @@ def home():
         elif request.form['util'] == 'util9':
             rho = 0.9
 
-        # TODO must check if round size and seed were informed. If not, default values are 1_280 and None.
-        k = 1_280  # TODO must implement round size request box on front-end. This line is a place-holder.
-        seed = 1234  # TODO must implement seed request box on front-end. This line is a place-holder.
-        return redirect(url_for('simul', discipline=discipline, rho=rho, seed=seed, k=k))
+        # TODO must check if 'round_size' and seed were informed. If not, default values are 1_280 and None.
+        k = 1_280  # TODO must implement 'round_size' request box on front-end. This line is a place-holder.
+        seed = None  # TODO must implement seed request box on front-end. This line is a place-holder.
+        # return redirect(url_for('simul', discipline=discipline, rho=rho, seed=seed, k=k))
+        return redirect(url_for('simul', discipline=discipline, rho=rho))
 
     elif request.method == 'GET':
         return render_template("home.html")
@@ -43,6 +44,7 @@ def simul(discipline, rho):
         results_nq, results_nq_icl, results_nq_icu, \
         results_nq_vars, results_nq_vars_icl, results_nq_vars_icu, \
         execution_time = master.webmain(discipline, rho)  # TODO pass k and seed as arguments
+    execution_time = "Execution time: {0:.2f} seconds".format(execution_time)
     discipline = "FCFS" if discipline == 1 else "LCFS"
     return render_template("simulation.html", discipline=discipline, rho=rho,
                            results_w=json.dumps(results_w),
@@ -57,7 +59,7 @@ def simul(discipline, rho):
                            results_nq_vars=json.dumps(results_nq_vars),
                            results_nq_vars_icl=json.dumps(results_nq_vars_icl),
                            results_nq_vars_icu=json.dumps(results_nq_vars_icu),
-                           execution_time=json.dumps(execution_time))
+                           execution_time=execution_time)
 
 
 if __name__ == "__main__":
