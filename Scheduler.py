@@ -21,13 +21,13 @@ class Scheduler:
         self.__schedule = []
 
         # schedule first arrival
-        client = Client(0, self.__gen.get_exponential_time_lambda_1())
+        client = Client(0, self.__gen.get_exponential_time_lambda_1(), 0)
         self.__update_schedule(('a', client))
 
-    def schedule_next_arrival(self):
+    def schedule_next_arrival(self, round_num):
         """Schedule the event of the next client arrival"""
         self.__last_arrival_time += self.__gen.get_exponential_time()  # calculate next arrival time
-        client = Client(self.__last_arrival_time, self.__gen.get_exponential_time_lambda_1())
+        client = Client(self.__last_arrival_time, self.__gen.get_exponential_time_lambda_1(), round_num)
         self.__update_schedule(('a', client))
 
     def __update_schedule(self, event):

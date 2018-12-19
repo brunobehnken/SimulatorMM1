@@ -50,7 +50,7 @@ class SimulatorFCFS:
                         area = delta_time * len(self.__queue)  # calculates the area under the graphic
                         self.__areas.append(area)  # updates 'waiting costumers' statistics
                     self.__queue.append(client)  # client goes to the queue
-                self.__scheduler.schedule_next_arrival()  # schedule next arrival
+                self.__scheduler.schedule_next_arrival(0)  # schedule next arrival  # TODO implement round number
                 if counter == client_num:  # if the requested statistics were gathered, pause simulation
                     break  # ATTENTION: simulation should NOT break before schedule_next_arrival()
 
@@ -175,7 +175,7 @@ class SimulatorLCFS:
                         area = delta_time * len(self.__queue)  # calculates the area under the graphic
                         self.__areas.append(area)  # updates 'waiting costumers' statistics
                     self.__queue.append(client)  # client goes to the queue
-                self.__scheduler.schedule_next_arrival()  # schedule next arrival
+                self.__scheduler.schedule_next_arrival(0)  # schedule next arrival  # TODO implement round number
                 if counter == client_num:  # if the requested statistics were gathered, pause simulation
                     break  # ATTENTION: simulation should NOT break before schedule_next_arrival()
 
