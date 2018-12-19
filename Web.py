@@ -5,6 +5,7 @@ import json
 app = Flask(__name__)
 
 
+# noinspection PyBroadException
 @app.route("/", methods=['GET', 'POST'])
 def home():
     discipline = None
@@ -27,16 +28,16 @@ def home():
         elif request.form['util'] == 'util9':
             rho = 0.9
 
-        if(request.form['k'] is not ''):
-          try:
-            k = int(request.form['k'])
-          except:
-            pass
-        if(request.form['seed'] is not ''):          
-          try:
-            seed = int(request.form['seed'])
-          except:
-            pass
+        if request.form['k'] is not '':
+            try:
+                k = int(request.form['k'])
+            except:
+                pass
+        if request.form['seed'] is not '':
+            try:
+                seed = int(request.form['seed'])
+            except:
+                pass
         return redirect(url_for('simul', discipline=discipline, rho=rho, k=k, seed=seed))
 
     elif request.method == 'GET':
@@ -46,7 +47,7 @@ def home():
 @app.route("/simul/d<int:discipline>u<float:rho>k<int:k>s<string:seed>")
 def simul(discipline, rho, k, seed):
     if seed == "-1":
-      seed = None
+        seed = None
     master = Master()
     results_w, results_w_icl, results_w_icu, \
         results_w_vars, results_w_vars_icl, results_w_vars_icu, \
